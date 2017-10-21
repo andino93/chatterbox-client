@@ -13,7 +13,7 @@ app.send = function (message) {
     // This is the url you should use to communicate with the parse API server.
     url: app.server,
     type: 'POST',
-    data: message,
+    data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
       console.log(JSON.stringify(data));
@@ -53,7 +53,6 @@ app.clearMessages = function() {
 };
 
 app.renderMessage = function(messageObj) {
-  let username = messageObj.username || window.location.search.slice(10)
   $('#chats').append(`<p>${messageObj.username}: ${messageObj.text}</p>`);
 };
 
@@ -67,8 +66,21 @@ app.handleUsernameClick = function(message) {
   // console.log(message);
 };
 
-app.handleSubmit = function(message) {
-  app.send();
+app.messageFormatter = function(message, username, chatroom) {
+  return {
+    username: username,
+    text: message,
+    chatroom: chatroom
+  };
+};
+
+app.handleSubmit = function(message, username, chatroom) {
+  username = messageObj.username || window.location.search.slice(10);
+  chatroom = messageObj.chatroom || 'lobby';
+  let newMessage = messageFormatter(message, username, chatroom);
+
+  app.send(newMessage);
+
 };
 
 $(document).ready(function() {
