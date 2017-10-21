@@ -4,10 +4,8 @@ let JSONfetch; // storage for app.fetch()
 app.server = 'http://parse.sfs.hackreactor.com/chatterbox/classes/messages';
 
 app.init = function() {
-  // app.fetch();
-  $('.submit').on('click', app.handleSubmit($('#message').val()));
+  app.fetch();
   $('.username').on('click', app.handleUsernameClick($(this)));
-  // $('.submit').on('click', app.handleSubmit($('#message')));
 };
 
 app.send = function (message) {
@@ -32,7 +30,7 @@ app.fetch = function() {
   $.ajax({
     type: 'GET',
     url: app.server,
-    // data: message,
+    data: "order=-createdAt",
     contentType: 'application/json',
     success: function (data) {
       _.each(data.results, function(messageObj) {
@@ -51,11 +49,12 @@ app.fetch = function() {
 };
 
 app.clearMessages = function() {
-  $('#chats').text('');
+  $('#chats').empty();
 };
 
 app.renderMessage = function(messageObj) {
-  $('#chats').append(`<p>${message.username}: ${message.text}</p>`);
+  let username = messageObj.username || window.location.search.slice(10)
+  $('#chats').append(`<p>${messageObj.username}: ${messageObj.text}</p>`);
 };
 
 app.renderRoom = function(roomname) {
@@ -69,16 +68,13 @@ app.handleUsernameClick = function(message) {
 };
 
 app.handleSubmit = function(message) {
-  message = message.text || message;
-  // alert('this works sorta');
-  // app.renderMessage(message);
-  // app.send(message);
+  app.send();
 };
 
-// app.init(); // do stuff
 $(document).ready(function() {
-  app.init();
+  app.init(); // do stuff
+  $('.submit').on('click', function() {
+    app.handleSubmit($('#message').val())
+  });
 
-  
-  
 });
