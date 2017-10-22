@@ -46,6 +46,15 @@ body {
     line-height: 13px;
 }
 
+#sidebar {
+    float:right;
+    width:250px;
+    background:#c9c;
+    display:table-cell;
+    vertical-align:top;
+    overflow: hidden;
+}
+
 form {
     padding: 20px;
     padding-left: 0;
@@ -84,7 +93,7 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
+    color: blue;
     background-color: #0090da;
 }
 
